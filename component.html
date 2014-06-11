@@ -92,22 +92,18 @@
         this.playbeats = JSON.parse(this.getAttribute("playbeats")) || [[],[],[],[]];
       },
       colorSquares : function(){
-        console.log("Attempting to color squares");
-
         var that = this;
-
         for(var i = 0; i < this.playbeats.length; i++){
           var beatCount = i + 1;
-
           var beats = this.playbeats[i];
           for(var j = 0; j < beats.length; j++) {
             var channel = beats[j];
             this.shadowRoot.querySelector(".channel[data-channel="+channel+"] .beat:nth-child("+beatCount+")").classList.add("on");
           }
         }
-
       },
       attached : function(){
+        this.super();
         var that = this;
         this.addEventListener("channelUpdated",function(){
           this.updateChannels();
