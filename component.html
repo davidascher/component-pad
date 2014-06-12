@@ -23,38 +23,36 @@
       "description": "Alternates output between set broadcasts from a single input",
       "broadcasts": {
         "A": {
-          "label": "Output A",
+          "label": "Beat A",
           "description": "The first broadcast in the rotation.",
           "default": "green"
         },
         "B": {
-          "label": "Output B",
+          "label": "Beat B",
           "description": "The second broadcast in the rotation.",
           "default": "yellow"
         },
         "C": {
-          "label": "Output C",
+          "label": "Beat C",
           "description": "The third broadcast in the rotation."
         },
         "D": {
-          "label": "Output D",
+          "label": "Beat D",
           "description": "The fourth broadcast in the rotation."
         },
         "E": {
-          "label": "Output E",
+          "label": "Beat E",
           "description": "The fifth broadcast in the rotation."
         }
       },
       "listeners": {
         "input": {
-          "description": "The input that alternates out the broadcasts.",
-          "label": "Input",
+          "description": "Plays the next beat in the sequence.",
+          "label": "Play Beat",
           "default": true
         }
       },
-      "attributes": {
-
-      }
+      "attributes": {}
     }
   </ceci-definition>
   <script>
@@ -89,7 +87,7 @@
         this.super();
         this.lastBroadcast = null;
         var self = this;
-        this.playbeats = JSON.parse(this.getAttribute("playbeats")) || [[],[],[],[]];
+        this.playbeats = JSON.parse(this.getAttribute("playbeats")) || [["A"],["B"],["A"],["B"]];
       },
       colorSquares : function(){
         var that = this;
