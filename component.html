@@ -20,10 +20,60 @@
       "name": "pad",
       "description": "Alternates output between set broadcasts from a single input",
       "broadcasts": {
-        "A": {
-          "label": "Beat A",
-          "description": "The first broadcast in the rotation.",
+        "taplabel": {
+          "label": "Tapped label",
+          "description": "The label of the key tapped",
           "default": "green"
+        },
+        "tapnumber": {
+          "label": "Tapped number",
+          "description": "The number of the key tapped (starts at 1)",
+          "default": "blue"
+        },
+        "tap1": {
+          "label": "Button 1 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap2": {
+          "label": "Button 2 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap3": {
+          "label": "Button 3 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap4": {
+          "label": "Button 4 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap5": {
+          "label": "Button 5 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap6": {
+          "label": "Button 6 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap7": {
+          "label": "Button 7 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap8": {
+          "label": "Button 8 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap9": {
+          "label": "Button 9 tapped",
+          "description": "The first button was tapped",
+          "default": ""
         }
       },
       "listeners": {
@@ -187,7 +237,6 @@
         ];
         var self = this;
         this.labelsList = this.getAttribute("labels").split(',');
-        console.log(this.labelsList);
       },
       attached : function(){
         this.super();
@@ -215,6 +264,7 @@
       },
       generateCells: function() {
         this.$.box.innerHTML = '';
+        var that = this;
         var row;
         var cell;
         var counter = 0;
@@ -227,21 +277,32 @@
             cell.style.width =((100.0-this.numcols*4)/this.numcols).toString() + "%";
             label = document.createElement('div');
             label.setAttribute('class', 'label');
-            label.textContent = this.labelsList[counter] || " ";
+            var labelText = this.labelsList[counter] || "";
+            cell.setAttribute('number', counter+1);
+            cell.setAttribute('label', labelText);
+            label.textContent = labelText
             cell.appendChild(label);
             cell.addEventListener("click", function(e) {
               var square= e.currentTarget;
+              var label = square.getAttribute('label');
+              if (label) {
+                that.broadcast("taplabel", label);
+              }
+              var tapnumber = square.getAttribute('number');
+              that.broadcast("tapnumber", tapnumber);
+              if (Number(tapnumber) < 10) {
+                if (label == '') label = "tap"
+                that.broadcast('tap' + tapnumber, label);
+              }
+
               // next two lines are sadly needed: http://css-tricks.com/restart-css-animation/
               square.classList.remove("animation-target");
               square.offsetWidth = square.offsetWidth;
               square.classList.add("animation-target");
             });
-            console.log(this.palettenumber);
-            console.log(palette);
             var palette = this.colors[(this.palettenumber-1) % this.colors.length];
             cell.style.backgroundColor = palette[counter % palette.length];
             row.appendChild(cell);
-            console.log('cell');
             counter ++;
           }
           this.$.box.appendChild(row);
@@ -253,7 +314,6 @@
       },
       labelsChanged: function (oldValue, newValue) {
         this.labelsList = newValue.split(',');
-        console.log(newValue);
         this.generateCells();
       },
       numcolsChanged: function (oldValue, newValue) {
