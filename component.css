@@ -180,6 +180,9 @@
   margin-right: 4%;
 }
 
+:host .push:last-child {
+  margin-right: 0;
+}
 :host .label {
   display: inline;
   position: absolute;
